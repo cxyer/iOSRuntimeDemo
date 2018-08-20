@@ -5,7 +5,7 @@ Objective-C的动态性
         ```
         typedef struct objc_selector *SEL;
         ```
-        使用@selector()或sel_registerName获得
+        使用@selector()或sel_registerName获得
     2. id：指向类实例的指针
         ```
         typedef struct objc_object *id;
@@ -57,7 +57,7 @@ Objective-C的动态性
         return [super resolveInstanceMethod:sel];
     }
     ```
-    [self class]和object_getClass(self)等价，[self class]会调用object_getClass(self)，这是self为实例对象的情况。如果self为类对象，那么[self class]会返回自身，即self，object_getClass(self)得到元类
+    [self class]和object_getClass(self)等价，[self class]会调用object_getClass(self)，这是self为实例对象的情况。如果self为类对象，那么[self class]会返回自身，即self，object_getClass(self)得到元类
 4. forwardingTargetForSelector
     ```
     + (id)forwardingTargetForSelector:(SEL)aSelector {

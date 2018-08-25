@@ -20,19 +20,27 @@
 
 @implementation ViewController
 
-- (void)cxy_viewWillAppear:(BOOL)animated {
-    [self cxy_viewWillAppear:animated];
+//- (void)cxy_viewWillAppear:(BOOL)animated {
+//    [self cxy_viewWillAppear:animated];
+//    NSLog(@"%s",__func__);
+//}
+//
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    NSLog(@"%s",__func__);
+//}
+
+- (void)originalMethod {
     NSLog(@"%s",__func__);
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)overrideMethod {
     NSLog(@"%s",__func__);
 }
 
 + (void)load {
-    SEL originalSelector = @selector(viewWillAppear:);
-    SEL overrideSelector = @selector(cxy_viewWillAppear:);
+    SEL originalSelector = @selector(originalMethod);
+    SEL overrideSelector = @selector(overrideMethod);
     Method originalMethod = class_getInstanceMethod(self, originalSelector);
     Method overrideMethod = class_getInstanceMethod(self, overrideSelector);
     if (class_addMethod(self, originalSelector, method_getImplementation(overrideMethod), method_getTypeEncoding(overrideMethod))) {
@@ -51,7 +59,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self originalMethod];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

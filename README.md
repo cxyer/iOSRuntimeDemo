@@ -1,7 +1,7 @@
 # Runtime
 Objective-C的动态性
 1. 概念
-    1. SEL：映射到方法的字符串
+    1. SEL：方法选择器
         ```
         typedef struct objc_selector *SEL;
         ```
@@ -32,7 +32,7 @@ Objective-C的动态性
         ```
         typedef struct ivar_t *Ivar;
         ```
-    5. IMP：方法实现
+    5. IMP：方法实现，指向具体的实现逻辑函数
         ```
         typedef void (*IMP)(void /* id, SEL, ... */ );
         ```

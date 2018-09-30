@@ -143,6 +143,7 @@ Objective-C的动态性
             OBJC_ASSOCIATION_COPY
         }
         ```
+    4. 关联对象存储在一张全局的map，key为关联对象的指针地址，value为另外一张map。另外一张map的key和value分别为设置关联对象时的key和value。
 8. Method Swizzling：修改了SEL的IMP
 
     ```

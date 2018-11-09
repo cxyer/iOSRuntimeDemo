@@ -3,12 +3,12 @@ Objective-C的动态性
 1. 可以先看看源码API，我之前写的一份笔记[runtime.h源码通读](https://github.com/cxyer/iOSNote/wiki/runtime.h%E6%BA%90%E7%A0%81%E9%80%9A%E8%AF%BB)
 2. 概念
     1. SEL：方法选择器
-        ```
+        ```objc
         typedef struct objc_selector *SEL;
         ```
         使用@selector()或sel_registerName获得
     2. id：对象
-        ```
+        ```objc
         typedef struct objc_object *id;
 
         struct objc_object {
@@ -17,7 +17,7 @@ Objective-C的动态性
         ```
         objc_objecth包含一个isa指针，可以找到对象所属的类。顺便说下，对象的isa指向类对象，类对象指向元类，元类指向根元类，根元类指向自己。对象的superClass最终会指向nil，根元类的superClass会指向根类对象。
     3. Method：方法
-        ```
+        ```objc
         typedef struct method_t *Method;
 
         struct method_t {
@@ -30,7 +30,7 @@ Objective-C的动态性
         }
         ```
     4. Ivar：变量
-        ```
+        ```objc
         typedef struct ivar_t *Ivar;
         
         struct objc_ivar {
@@ -47,7 +47,7 @@ Objective-C的动态性
         }   
         ```
     5. IMP：方法实现，指向具体的实现逻辑函数
-        ```
+        ```objc
         typedef void (*IMP)(void /* id, SEL, ... */ );
         ```
 3. 发送消息
@@ -56,7 +56,7 @@ Objective-C的动态性
     * 编译时确定接收到的消息，运行时通过@selector找到对应的方法，如果找不到就会执行消息转发过程
 4. 动态方法解析
 
-    ```
+    ```objc
     + (BOOL)resolveClassMethod:(SEL)sel {
         if (sel==@selector(danymicClassMethod:)) {
             class_addMethod(object_getClass(self), sel, class_getMethodImplementation(object_getClass(self), @selector(myDanymicClassMethod:)), "v@:");
@@ -76,7 +76,7 @@ Objective-C的动态性
     self为实例对象，[self class]和object_getClass(self)等价，[self class]会调用object_getClass(self)。self为类对象，那么[self class]会返回自身，即self，object_getClass(self)得到元类
 5. forwardingTargetForSelector
 
-    ```
+    ```objc
     + (id)forwardingTargetForSelector:(SEL)aSelector {
         if (aSelector==@selector(otherDanymicClassMethod:)) {
             return [OtherPerson class];
@@ -94,7 +94,7 @@ Objective-C的动态性
     由OtherPerson对象实现方法
 6. forwardInvocation
 
-    ```
+    ```objc
     - (void)forwardInvocation:(NSInvocation *)anInvocation {
         OtherPerson *otherPerson = [[OtherPerson alloc] init];
         if (anInvocation.selector==@selector(oDanymicInstanceMethod:)) {
@@ -142,7 +142,7 @@ Objective-C的动态性
     2. @property在分类中并没有为我们生成变量和方法，所以我们需要使用关联对象来解决这个问题
     3. 关联对象的方法
 
-        ```
+        ```objc
         id objc_getAssociatedObject(id object, const void *key);
 
         void objc_setAssociatedObject(id object, const void *key, id value, objc_AssociationPolicy policy);
@@ -160,7 +160,7 @@ Objective-C的动态性
     4. 关联对象存储在一张全局的map，key为关联对象的指针地址，value为另外一张map。另外一张map的key和value分别为设置关联对象时的key和value。
 9. Method Swizzling：修改了SEL的IMP
 
-    ```
+    ```objc
     - (void)cxy_viewWillAppear:(BOOL)animated {
         [self cxy_viewWillAppear:animated];
         NSLog(@"%s",__func__);

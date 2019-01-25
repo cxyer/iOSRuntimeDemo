@@ -127,7 +127,7 @@ Objective-C的动态性
     }
     ```
     必须重写methodSignatureForSelector，与forwardingTargetForSelector的区别在于forwardingTargetForSelector只能转发给一个对象，而forwardInvocation可以转发给多个。多继承。
-7. 消息转发过程
+7. 消息转发过程（前5步称为消息传递）
     1. 检测@selector是否可以忽略
     2. 检测target是否为nil
     3. 从cache找imp
